@@ -6,29 +6,34 @@ package body stackADT is
 	type Node;
 	type nodeAccess is access Node;
 	type Node is record
-		state : integer := -1;
+		n : integer := -1;
+		m : integer := -1;
 		next_node : nodeAccess := null;
 	end record;
 	top : nodeAccess := null;
 
 
-	procedure push(x :in integer) is
+	procedure push(x : in integer; y : in integer) is
 		oldTop : constant nodeAccess := top;
 	begin
 		top := new Node;
 		top.next_node := oldTop;
-		top.state := x;
+		top.n := y;
+		top.m := x;
 	end push;
 	
-	function pop return integer is
+	procedure pop(x : out integer; y: out integer) is
 		oldTop : constant nodeAccess := top;
 	begin
+		x := -1;
+		y := -1;
 		if top = null then
 			put_line("stack is empty");
-			return -1;
+		else
+			top := oldTop.next_node;
+			x := oldTop.m;
+			y := oldTop.n;
 		end if;
-		top := oldTop.next_node;
-		return oldTop.state;
 	end pop;
 	
 	function stack_is_empty return Boolean is
@@ -36,16 +41,17 @@ package body stackADT is
 		return top = null;
 	end stack_is_empty;
 	
-	function stack_top return integer is
+	procedure stack_top(x : out integer; y: out integer) is
 	begin
+		x := -1;
+		y := -1;
 		if top = null then
 			put_line("stack is empty");
 		else
-			return top.state;
+			x := top.m;
+			y := top.n;
 		end if;
-		return -1;
 	end stack_top;
-	
 	procedure reset_stack is
 	begin
 		top := null;
