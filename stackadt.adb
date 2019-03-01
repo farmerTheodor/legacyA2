@@ -1,6 +1,6 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
---memory allocation was a real piece of shit
+
 
 package body stackADT is
 	type Node;

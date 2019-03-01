@@ -1,9 +1,13 @@
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
+with Ada.Text_Io; use Ada.Text_Io;
+with Ada.Calendar; use Ada.Calendar;
 
 with stackADT; use stackADT;
 
 procedure ackermann is
 	integerOut : integer := 0;
+	startTime : Time;
+	finTime : Time;
 
 	procedure execute_state(m : in integer; n : in out integer) is
 		
@@ -14,8 +18,7 @@ procedure ackermann is
 			push(m-1, 1);
 		elsif m > 0 and n > 0 then
 			push(m-1, -1);
-			push(m, n - 1);
-			
+			push(m, n - 1);	
 		end if;
 	end execute_state;
 
@@ -39,7 +42,6 @@ procedure ackermann is
 			if n = -1 then
 				n := oldN;
 			end if;
-
 			execute_state(m, n);
 			oldN := n;		
 			exit when stack_is_empty;
@@ -50,10 +52,12 @@ procedure ackermann is
 
 
 begin -- ackermann
-
+	startTime := Clock;
 	calcAckermann(3, 4, integerOut);
+	finTime := Clock;
+	put("answer: ");
 	put(integerOut);
+	Put_Line("    Time it took(seconds): " & Duration'Image(finTime - startTime));
 	reset_stack;
-	
-	
+		
 end ackermann;
